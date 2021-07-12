@@ -17,13 +17,13 @@ A* path-finding algorithm finds the most economic (in this case shortest) route 
 ---
 
 ## :star: Stage of the project:
-- [x] `Initialize the app with basic content`
+- [x] Initialize the app with basic content
 
-- [ ] Implement a canvas element and basic update & draw system 
+- [x] Implement a canvas element and basic update & draw system 
+
+- [x] Add interactivity with objects (nodes & connections)
 
 - [ ] Implement algorithm mechanics 
-
-- [ ] Add interactivity with objects (nodes & connections)
 
 - [ ] Add user-interactive interface
 

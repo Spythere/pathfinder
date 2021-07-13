@@ -23,7 +23,7 @@ A* path-finding algorithm finds the most economic (in this case shortest) route 
 
 - [x] Add interactivity with objects (nodes & connections)
 
-- [ ] Implement algorithm mechanics 
+- [x] Implement algorithm mechanics 
 
 - [ ] Add user-interactive interface
 

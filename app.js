@@ -7,6 +7,13 @@ const App = {
 
   mounted() {
     this.init();
+
+    window.addEventListener('keydown', (e) => {
+      if (e.code == 'Enter') {
+        runPathFinder();
+        renderCanvas();
+      }
+    });
   },
 
   methods: {

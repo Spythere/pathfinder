@@ -2,6 +2,7 @@ const App = {
   data() {
     return {
       canvas: null,
+      mode: 0 /* 0 - placing nodes, 1 - adding connections */,
     };
   },
 
@@ -33,30 +34,38 @@ const App = {
       ctx.fillRect(0, 0, mapWidth, mapHeight);
     },
 
-    onMouseDown({ clientX, clientY }) {
+    onMouseDown({ clientX, clientY, which, button }) {
       if (!this.canvas) return;
-
       calculateMousePosition(clientX, clientY);
 
-      let existingNode = null;
-      for (let obj of ObjectNode.list) {
-        if (obj.isPointWithin(canvas.mousePos.x, canvas.mousePos.y, 10)) {
-          existingNode = obj;
-          break;
+      // LPM
+      if (which === 1 && button === 0) {
+        if (this.mode === 0) ObjectNode.placeAtGrid(this.canvas.mousePos.x, this.canvas.mousePos.y, this.canvas);
+
+        if (this.mode === 1) {
+          canvas.connectionStartNode = ObjectNode.nodeAt(this.canvas.mousePos.x, this.canvas.mousePos.y);
         }
       }
 
-      if (!existingNode) {
-        const node = new ObjectNode(canvas.mousePos.x, canvas.mousePos.y);
+      // let existingNode = null;
+      // for (let obj of ObjectNode.list) {
+      //   if (obj.isPointWithin(canvas.mousePos.x, canvas.mousePos.y, 10)) {
+      //     existingNode = obj;
+      //     break;
+      //   }
+      // }
 
-        for (let con of ObjectNode.connections) {
-          if (node.isIntersectingWithLine({ x: con[0].x, y: con[0].y }, { x: con[1].x, y: con[1].y })) {
-            console.log('NAJS');
-          }
-        }
-      } else {
-        canvas.connectionStartNode = existingNode;
-      }
+      // if (!existingNode) {
+      //   const node = new ObjectNode(canvas.mousePos.x, canvas.mousePos.y);
+
+      //   for (let con of ObjectNode.connections) {
+      //     if (node.isIntersectingWithLine({ x: con[0].x, y: con[0].y }, { x: con[1].x, y: con[1].y })) {
+      //       console.log('NAJS');
+      //     }
+      //   }
+      // } else {
+      //   canvas.connectionStartNode = existingNode;
+      // }
 
       renderCanvas();
     },
@@ -87,6 +96,12 @@ const App = {
 
       calculateMousePosition(clientX, clientY);
       renderCanvas();
+    },
+
+    onContextMenu(e) {
+      e.preventDefault();
+
+      this.mode = this.mode == 1 ? 0 : 1;
     },
   },
 };

@@ -2,7 +2,7 @@ class ObjectNode {
   constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.radius = 15;
+    this.radius = 10;
 
     this.visited = false;
     this.globalGoal = Infinity;
@@ -71,3 +71,24 @@ class ObjectNode {
 
 ObjectNode.list = [];
 ObjectNode.connections = [];
+
+ObjectNode.placeAtGrid = function (nodeX, nodeY, canvas) {
+  const cellCol = Math.min(Math.max(Math.round(nodeX / canvas.gridGap), 0), canvas.gridCols - 1);
+  const cellRow = Math.min(Math.max(Math.round(nodeY / canvas.gridGap), 0), canvas.gridRows - 1);
+  const index = cellCol - 1 + canvas.gridCols * (cellRow - 1); // shifted by 1
+
+  if (canvas.gridNodes[index]?.node) {
+    console.log('ups');
+    return;
+  }
+
+  canvas.gridNodes[index].node = new ObjectNode(cellCol * canvas.gridGap, cellRow * canvas.gridGap);
+};
+
+ObjectNode.nodeAt = function (x, y) {
+  const cellCol = Math.min(Math.max(Math.round(x / canvas.gridGap), 0), canvas.gridCols - 1);
+  const cellRow = Math.min(Math.max(Math.round(y / canvas.gridGap), 0), canvas.gridRows - 1);
+  const index = cellCol - 1 + canvas.gridCols * (cellRow - 1); // shifted by 1
+
+  return canvas.gridNodes[index] ? canvas.gridNodes[index].node : null;
+};

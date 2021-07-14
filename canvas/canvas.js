@@ -5,9 +5,14 @@ const canvas = {
     width: 0,
     height: 0,
   },
+
+  gridNodes: [],
+  gridGap: 30,
+  gridRows: 0,
+  gridCols: 0,
+
   mousePos: { x: 0, y: 0 },
   connectionStartNode: null,
-
   startNode: null,
   endNode: null,
 };
@@ -23,25 +28,48 @@ function initCanvasObject(canvasRef) {
   canvas.ctx.lineWidth = 2;
   canvas.ctx.font = '30px Arial';
 
+  const gridCols = Math.floor(canvas.dimensions.width / canvas.gridGap) - 1;
+  const gridRows = Math.floor(canvas.dimensions.height / canvas.gridGap) - 1;
+
+  canvas.gridCols = gridCols;
+  canvas.gridRows = gridRows;
+
+  for (let i = 0; i < gridCols; i++) {
+    for (let j = 0; j < gridRows; j++) {
+      canvas.gridNodes[i + gridCols * j] = {
+        node: null,
+        x: i * canvas.gridGap + canvas.gridGap,
+        y: canvas.gridGap * j + canvas.gridGap,
+      };
+    }
+  }
+
   return canvas;
 }
 
 function calculateMousePosition(clientX, clientY) {
   const { x, y } = canvas.element.getBoundingClientRect();
 
-  const mouseX = ~~(clientX - x);
-  const mouseY = ~~(clientY - y);
+  const mouseX = clientX - x;
+  const mouseY = clientY - y;
 
   canvas.mousePos.x = mouseX;
   canvas.mousePos.y = mouseY;
 }
 
 function renderCanvas() {
-  const { ctx } = canvas;
-
+  const { ctx, gridGap, dimensions, gridNodes } = canvas;
   ctx.fillStyle = 'white';
 
-  ctx.fillRect(0, 0, canvas.dimensions.width, canvas.dimensions.height);
+  ctx.fillRect(0, 0, dimensions.width, dimensions.height);
+
+  ctx.fillStyle = 'gray';
+
+  for (let i = 0; i < gridNodes.length; i++) {
+    ctx.beginPath();
+    ctx.arc(gridNodes[i].x, gridNodes[i].y, 1, 0, Math.PI * 2, false);
+    ctx.fill();
+  }
 
   for (let con of ObjectNode.connections) {
     ctx.beginPath();

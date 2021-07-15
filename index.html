@@ -18,15 +18,22 @@
 
   <body>
     <div id="app">
-      <canvas
-        ref="canvas"
-        width="1024"
-        height="720"
-        @mousedown="onMouseDown"
-        @mouseup="onMouseUp"
-        @mousemove="onMouseMove"
-        @contextmenu="onContextMenu"
-      ></canvas>
+      <div class="grid">
+        <div class="menu">
+          <span class="menu_item" @click="changeMode(0)" :class="{current: this.mode===0}">NODE MODE</span>
+          <span class="menu_item" @click="changeMode(1)" :class="{current: this.mode===1}">CONNECTION MODE</span>
+        </div>
+
+        <canvas
+          ref="canvas"
+          width="1024"
+          height="720"
+          @mousedown="onMouseDown"
+          @mouseup="onMouseUp"
+          @mousemove="onMouseMove"
+          @contextmenu="onContextMenu"
+        ></canvas>
+      </div>
     </div>
   </body>
 </html>

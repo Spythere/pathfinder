@@ -80,6 +80,10 @@ const App = {
 
       this.mode = this.mode == 1 ? 0 : 1;
     },
+
+    changeMode(mode) {
+      this.mode = mode;
+    },
   },
 };
 

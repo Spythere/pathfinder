@@ -9,6 +9,7 @@ function runPathFinder() {
     node.globalGoal = Infinity;
     node.localGoal = Infinity;
     node.parentNode = null;
+    node.isOnPath = false;
   }
 
   let currentNode = grid.startNode;
@@ -39,5 +40,12 @@ function runPathFinder() {
         nb.globalGoal = nb.localGoal + heuristic(nb, grid.endNode);
       }
     }
+  }
+
+  let currentChildNode = grid.endNode;
+
+  while (currentChildNode.parent) {
+    currentChildNode.isOnPath = true;
+    currentChildNode = currentChildNode.parent;
   }
 }

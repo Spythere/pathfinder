@@ -34,20 +34,16 @@ const App = {
 
     onMouseDown({ clientX, clientY, which, button }) {
       if (!canvas.element) return;
+      if (which !== 1 && button !== 0) return;
 
       calculateMousePosition(clientX, clientY);
 
-      // LPM
-      if (which === 1 && button === 0) {
-        if (this.mode === 0) GridNode.placeAt(mousePosition.x, mousePosition.y, grid);
+      const node = GridNode.getNodeAt(mousePosition.x, mousePosition.y, grid);
 
-        if (this.mode === 1) {
-          const node = GridNode.getNodeAt(mousePosition.x, mousePosition.y, grid);
-
-          if (node.isOccupied) {
-            grid.connectionStartNode = node;
-          }
-        }
+      if (!node.isOccupied) {
+        GridNode.placeAt(mousePosition.x, mousePosition.y, grid);
+      } else {
+        grid.connectionStartNode = node;
       }
 
       renderCanvas();
@@ -55,11 +51,14 @@ const App = {
 
     onMouseUp({ clientX, clientY }) {
       calculateMousePosition(clientX, clientY);
+      let existingNode = GridNode.getNodeAt(mousePosition.x, mousePosition.y, grid);
 
       if (grid.connectionStartNode) {
-        let existingNode = GridNode.getNodeAt(mousePosition.x, mousePosition.y, grid);
-
-        if (existingNode.isOccupied && !existingNode.isNeighborsWith(grid.connectionStartNode))
+        if (
+          existingNode.isOccupied &&
+          !existingNode.isNeighborsWith(grid.connectionStartNode) &&
+          existingNode.gridIndex !== grid.connectionStartNode.gridIndex
+        )
           grid.connectionStartNode.connectWithNode(existingNode);
 
         grid.connectionStartNode = null;
@@ -69,16 +68,22 @@ const App = {
     },
 
     onMouseMove({ clientX, clientY }) {
+      calculateMousePosition(clientX, clientY);
+
       if (!grid.connectionStartNode) return;
 
-      calculateMousePosition(clientX, clientY);
       renderCanvas();
     },
 
     onContextMenu(e) {
       e.preventDefault();
+      const node = GridNode.getNodeAtCursorPosition();
 
-      this.mode = this.mode == 1 ? 0 : 1;
+      if (!node) return;
+
+      node.removeNode();
+
+      renderCanvas();
     },
 
     changeMode(mode) {

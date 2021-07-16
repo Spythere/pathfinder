@@ -41,7 +41,8 @@ function initCanvasObject(canvasRef) {
 
   for (let i = 0; i < grid.cols; i++) {
     for (let j = 0; j < grid.rows; j++) {
-      grid.nodeList[i + grid.cols * j] = new GridNode(i * grid.gap + grid.gap, grid.gap * j + grid.gap);
+      const index = i + grid.cols * j;
+      grid.nodeList[index] = new GridNode(i * grid.gap + grid.gap, grid.gap * j + grid.gap, index);
     }
   }
 
@@ -106,7 +107,8 @@ function renderCanvas() {
   for (let node of nodeList) {
     if (!node.isOccupied) continue;
 
-    ctx.fillStyle = grid.startNode === node ? 'green' : grid.endNode === node ? 'red' : '#fff';
+    ctx.fillStyle =
+      grid.startNode === node ? 'green' : grid.endNode === node ? 'red' : node.isOnPath ? 'yellow' : 'white';
 
     ctx.beginPath();
     ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2, false);

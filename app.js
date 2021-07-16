@@ -9,8 +9,13 @@ const App = {
     this.init();
 
     window.addEventListener('keydown', (e) => {
-      if (e.code == 'Enter') {
+      if (e.code === 'Enter') {
         runPathFinder();
+        renderCanvas();
+      }
+
+      if (e.code === 'Backspace') {
+        GridNode.goBack(1);
         renderCanvas();
       }
     });
@@ -45,8 +50,6 @@ const App = {
       } else {
         grid.connectionStartNode = node;
       }
-
-      console.log('mousedown');
 
       renderCanvas();
     },

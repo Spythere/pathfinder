@@ -2,6 +2,8 @@ const grid = {
   nodeList: [],
   connectionList: [],
 
+  history: [],
+
   gap: 30,
   rows: 0,
   cols: 0,
@@ -92,8 +94,6 @@ function renderCanvas() {
     let currentChildNode = grid.endNode;
 
     while (currentChildNode.parentNode) {
-      console.log(currentChildNode.gridIndex);
-
       ctx.beginPath();
       ctx.moveTo(currentChildNode.x, currentChildNode.y);
       ctx.lineTo(currentChildNode.parentNode.x, currentChildNode.parentNode.y);

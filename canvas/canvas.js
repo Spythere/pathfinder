@@ -91,13 +91,15 @@ function renderCanvas() {
 
     let currentChildNode = grid.endNode;
 
-    while (currentChildNode.parent) {
+    while (currentChildNode.parentNode) {
+      console.log(currentChildNode.gridIndex);
+
       ctx.beginPath();
       ctx.moveTo(currentChildNode.x, currentChildNode.y);
-      ctx.lineTo(currentChildNode.parent.x, currentChildNode.parent.y);
+      ctx.lineTo(currentChildNode.parentNode.x, currentChildNode.parentNode.y);
       ctx.stroke();
 
-      currentChildNode = currentChildNode.parent;
+      currentChildNode = currentChildNode.parentNode;
     }
   }
 

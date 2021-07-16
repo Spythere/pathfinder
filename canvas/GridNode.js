@@ -11,6 +11,7 @@ function GridNode(x, y, index) {
 
   this.isObstacle = false;
   this.isVisited = false;
+
   this.isOnPath = false;
 
   this.globalGoal = Infinity;
@@ -29,8 +30,6 @@ GridNode.prototype.connectWithNode = function (node) {
   if (!grid.startNode) grid.startNode = this;
 
   if (grid.endNode === this || grid.endNode == null) grid.endNode = node;
-
-  console.log('Connected!');
 };
 
 GridNode.prototype.distToNode = function (node) {
@@ -82,9 +81,15 @@ GridNode.placeAt = function (posX, posY, grid) {
 GridNode.prototype.removeNode = function () {
   if (!this.isOccupied) return;
 
-  if (this.neighborList.length == 2) {
-    this.neighborList[0].connectWithNode(this.neighborList[1]);
+  if (this.gridIndex === grid.startNode?.gridIndex || this.gridIndex === grid.endNode?.gridIndex) {
+    alert(`You can't remove the start or end nodes!`);
+
+    return;
   }
+
+  // if (this.neighborList.length == 2) {
+  //   this.neighborList[0].connectWithNode(this.neighborList[1]);
+  // }
 
   for (let neighbor of this.neighborList) {
     neighbor.neighborList = neighbor.neighborList.filter((node) => node.gridIndex !== this.gridIndex);
@@ -92,9 +97,11 @@ GridNode.prototype.removeNode = function () {
 
   grid.connectionList = grid.connectionList.filter((conn) => !conn.includes(this));
 
-  this.reset();
+  if (this.isOnPath) {
+    this.reset();
+    resetPathFinder();
+  } else this.reset();
 
-  runPathFinder();
   console.log('Removed');
 };
 

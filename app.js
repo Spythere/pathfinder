@@ -46,6 +46,8 @@ const App = {
         grid.connectionStartNode = node;
       }
 
+      console.log('mousedown');
+
       renderCanvas();
     },
 

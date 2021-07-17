@@ -25,6 +25,10 @@ const App = {
     init() {
       initCanvasObject(this.$refs['canvas']);
 
+      window.addEventListener('resize', (e) => {
+        resizeCanvas();
+      });
+
       renderCanvas();
     },
 

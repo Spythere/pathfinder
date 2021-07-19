@@ -2,6 +2,7 @@ const App = {
   data() {
     return {
       mode: 0 /* 0 - placing nodes, 1 - adding connections */,
+      storageMgr: new StorageManager('SAVED_GRID'),
     };
   },
 
@@ -17,6 +18,12 @@ const App = {
       if (e.code === 'Backspace') {
         GridNode.goBack(1);
         renderCanvas();
+      }
+
+      if (e.code === 'KeyS') {
+        // renderCanvas();
+        // this.storageMgr.saveGridState();
+        // console.log('Grid state saved!');
       }
     });
   },

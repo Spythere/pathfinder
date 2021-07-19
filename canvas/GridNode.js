@@ -65,8 +65,6 @@ GridNode.prototype.reset = function () {
 
   this.parentNode = null;
   this.neighborList = [];
-
-  // grid.history.push(['reset_node', this]);
 };
 
 GridNode.getNodeAt = function (posX, posY, grid) {
@@ -157,16 +155,11 @@ GridNode.goBack = function (steps = 1) {
     grid.nodeList[point[1]].isOccupied = false;
   }
 
-  // if (point[0] === 'start_node') {
-  //   grid.nodeList[point[1]].isOccupied = false;
-  // }
-
-  // if (point[0] === 'node_node') {
-  //   grid.nodeList[point[1]].isOccupied = false;
-  // }
+  if (point[0] === 'remove_node') {
+    grid.nodeList[point[1]].isOccupied = true;
+  }
 
   grid.history.pop();
-  // }
 };
 
 //   isPointWithin(pointX, pointY, gap = 0) {

@@ -22,11 +22,11 @@ function GridNode(x, y, index) {
 }
 
 GridNode.prototype.connectWithNode = function (node) {
-  const connection = [this, node, this.distToNode(node)];
+  const connection = [this.gridIndex, node.gridIndex, this.distToNode(node)];
   grid.connectionList.push(connection);
 
-  this.neighborList.push(node);
-  node.neighborList.push(this);
+  this.neighborList.push(node.gridIndex);
+  node.neighborList.push(this.gridIndex);
 
   let lastStartNode, lastEndNode;
 
@@ -50,7 +50,7 @@ GridNode.prototype.distToNode = function (node) {
 };
 
 GridNode.prototype.isNeighborsWith = function (node) {
-  return this.neighborList.includes(node);
+  return this.neighborList.includes(node.gridIndex);
 };
 
 GridNode.prototype.reset = function () {
@@ -107,11 +107,13 @@ GridNode.prototype.removeNode = function () {
   // }
   grid.history.push(['remove_node', this.gridIndex]);
 
-  for (let neighbor of this.neighborList) {
-    neighbor.neighborList = neighbor.neighborList.filter((node) => node.gridIndex !== this.gridIndex);
+  for (let neighborGridIndex of this.neighborList) {
+    const neighbor = grid.nodeList[neighborGridIndex];
+
+    neighbor.neighborList = neighbor.neighborList.filter((nIndex) => nIndex !== this.gridIndex);
   }
 
-  grid.connectionList = grid.connectionList.filter((conn) => !conn.includes(this));
+  grid.connectionList = grid.connectionList.filter((conn) => !conn.includes(this.gridIndex));
 
   if (this.isOnPath) {
     this.reset();
@@ -131,12 +133,15 @@ GridNode.goBack = function (steps = 1) {
     const lastStartNode = point[3];
     const lastEndNode = point[4];
 
-    connection[0].neighborList = connection[0].neighborList.filter(
-      (node) => node.gridIndex !== connection[1].gridIndex
+    const connectionNodeA = grid.nodeList[connection[0]];
+    const connectionNodeB = grid.nodeList[connection[1]];
+
+    connectionNodeA.neighborList = connectionNodeA.neighborList.filter(
+      (nodeIndex) => nodeIndex !== connectionNodeB.gridIndex
     );
 
-    connection[1].neighborList = connection[1].neighborList.filter(
-      (node) => node.gridIndex !== connection[0].gridIndex
+    connectionNodeB.neighborList = connectionNodeB.neighborList.filter(
+      (nodeIndex) => nodeIndex !== connectionNodeA.gridIndex
     );
 
     if (lastStartNode !== undefined) {

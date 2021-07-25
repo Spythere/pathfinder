@@ -25,7 +25,9 @@ function runPathFinder() {
     currentNode = untestedNodes[0];
     currentNode.isVisited = true;
 
-    for (const nb of currentNode.neighborList) {
+    for (const neighborIndex of currentNode.neighborList) {
+      const nb = grid.nodeList[neighborIndex];
+
       if (!nb.isVisited) untestedNodes.push(nb);
 
       let currentGoal = currentNode.localGoal + currentNode.distToNode(nb);

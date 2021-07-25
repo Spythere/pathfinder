@@ -110,9 +110,12 @@ const drawConnections = ({ ctx }) => {
   ctx.lineWidth = 2;
 
   for (let con of grid.connectionList) {
+    let nodeA = grid.nodeList[con[0]];
+    let nodeB = grid.nodeList[con[1]];
+
     ctx.beginPath();
-    ctx.moveTo(con[0].x, con[0].y);
-    ctx.lineTo(con[1].x, con[1].y);
+    ctx.moveTo(nodeA.x, nodeA.y);
+    ctx.lineTo(nodeB.x, nodeB.y);
     ctx.stroke();
   }
 

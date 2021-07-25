@@ -59,3 +59,21 @@ canvas {
 .menu_item.current {
     color: gold;
 }
+
+.legend {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    transform: translateX(25px);
+
+    color: white;
+}
+
+.legend > strong {
+    color: gold;
+}
+
+.legend > .key-code {
+    color: gainsboro;
+}

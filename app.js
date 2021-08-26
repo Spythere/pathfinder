@@ -56,7 +56,7 @@ const App = {
 
       const node = GridNode.getNodeAt(mousePosition.x, mousePosition.y, grid);
 
-      if (!node.isOccupied) {
+      if (node && !node.isOccupied) {
         GridNode.placeAt(mousePosition.x, mousePosition.y, grid);
       } else {
         grid.connectionStartNode = node;
@@ -71,6 +71,7 @@ const App = {
 
       if (grid.connectionStartNode) {
         if (
+          existingNode &&
           existingNode.isOccupied &&
           !existingNode.isNeighborsWith(grid.connectionStartNode) &&
           existingNode.gridIndex !== grid.connectionStartNode.gridIndex

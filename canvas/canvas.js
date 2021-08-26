@@ -51,7 +51,7 @@ function initCanvasObject(canvasRef) {
   canvas.ctx.font = '30px Arial';
 
   grid.cols = Math.floor(canvas.dimensions.width / grid.gap) - 1;
-  grid.rows = Math.floor(canvas.dimensions.height / grid.gap) - 1;
+  grid.rows = Math.floor(canvas.dimensions.height / grid.gap);
 
   for (let i = 0; i < grid.cols; i++) {
     for (let j = 0; j < grid.rows; j++) {

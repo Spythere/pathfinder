@@ -25,6 +25,8 @@
           <span class="menu_item" @click="changeMode(1)" :class="{current: this.mode===1}">CONNECTION MODE</span>
         </div> -->
 
+        <nav>PATH<span class="text--accent">FINDER</span> <sup style="font-size: 0.6em">beta</sup></nav>
+
         <canvas
           ref="canvas"
           @mousedown="onMouseDown"
@@ -34,6 +36,8 @@
         ></canvas>
 
         <div class="legend">
+          <hr />
+
           <span class="key-code">[LMB]</span> Place a node |
           <span class="key-code">[RMB]</span>
           Remove a node |

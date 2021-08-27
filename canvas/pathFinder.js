@@ -46,15 +46,13 @@ function runPathFinder() {
     currentChildNode.isOnPath = true;
     currentChildNode = currentChildNode.parentNode;
   }
+
+  grid.history.push(['pathfinder']);
 }
 
 function resetPathFinder() {
+  console.log('reset');
   for (const node of grid.nodeList) {
-    node.isVisited = false;
-    node.globalGoal = Infinity;
-    node.localGoal = Infinity;
-
-    node.isOnPath = false;
-    node.parentNode = null;
+    node.resetPathData();
   }
 }

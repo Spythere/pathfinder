@@ -39,8 +39,16 @@ GridNode.prototype.connectWithNode = function (node) {
   if (grid.endNode === this || grid.endNode == null) {
     lastEndNode = grid.endNode;
     grid.endNode = node;
+
+    if (this.isOnPath) {
+      runPathFinder();
+    }
     // grid.history.push(['end_node', this.gridIndex]);
   }
+
+  // if (grid.endNode && grid.endNode.isOnPath) {
+  //   resetPathFinder();
+  // }
 
   grid.history.push(['connection', connection, grid.connectionList.length - 1, lastStartNode, lastEndNode]);
 };
@@ -65,6 +73,15 @@ GridNode.prototype.reset = function () {
 
   this.parentNode = null;
   this.neighborList = [];
+};
+
+GridNode.prototype.resetPathData = function () {
+  this.isVisited = false;
+  this.globalGoal = Infinity;
+  this.localGoal = Infinity;
+
+  this.isOnPath = false;
+  this.parentNode = null;
 };
 
 GridNode.getNodeAt = function (posX, posY, grid) {
@@ -115,10 +132,9 @@ GridNode.prototype.removeNode = function () {
 
   grid.connectionList = grid.connectionList.filter((conn) => !conn.includes(this.gridIndex));
 
-  if (this.isOnPath) {
-    this.reset();
-    resetPathFinder();
-  } else this.reset();
+  if (this.isOnPath) resetPathFinder();
+
+  this.reset();
 };
 
 GridNode.goBack = function (steps = 1) {
@@ -162,6 +178,10 @@ GridNode.goBack = function (steps = 1) {
 
   if (point[0] === 'remove_node') {
     grid.nodeList[point[1]].isOccupied = true;
+  }
+
+  if (point[0] === 'pathfinder') {
+    resetPathFinder();
   }
 
   grid.history.pop();
